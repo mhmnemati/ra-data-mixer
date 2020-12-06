@@ -23,8 +23,17 @@ import mixerProvider from "ra-data-mixer";
 
 import { PostList } from "./posts";
 
+const provider1 = ...;
+const provider2 = ...;
+
+const mixer = (resource: string) =>
+    ({
+        posts: [provider1],
+        users: [provider2],
+    }[resource]);
+
 const App = () => (
-    <Admin dataProvider={mixerProvider("http://path.to.my.api/")}>
+    <Admin dataProvider={mixerProvider(mixer)}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
