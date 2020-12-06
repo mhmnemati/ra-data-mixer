@@ -22,8 +22,7 @@
         "admin",
         "react-admin",
         "dataprovider",
-        "mixer",
-        "lb4"
+        "mixer"
     ],
     "author": "KoLiBer",
     "license": "MIT",
