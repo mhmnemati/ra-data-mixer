@@ -36,7 +36,6 @@
     },
     "homepage": "https://github.com/ckoliber/ra-data-mixer#readme",
     "dependencies": {
-        "query-string": "^6.13.7",
         "ra-core": "^3.10.3"
     },
     "devDependencies": {
