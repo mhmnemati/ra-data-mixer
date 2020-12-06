@@ -1,7 +1,7 @@
 import { DataProvider } from "ra-core";
 
 export default (
-    mixer: (resource: string) => [DataProvider, string]
+    mixer: (resource: string) => [DataProvider, string | undefined]
 ): DataProvider => ({
     getList: async (resource, params) => {
         const [provider, targetResource] = mixer(resource);
