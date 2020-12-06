@@ -1,0 +1,48 @@
+{
+    "name": "ra-data-mixer",
+    "version": "0.1.0",
+    "description": "React Admin DataProvider Mixer",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "clean": "rm -Rf build",
+        "prebuild": "npm run clean",
+        "build": "tsc",
+        "build:watch": "tsc --watch",
+        "test": "mocha test/**/*.test.ts",
+        "prepublishOnly": "npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ckoliber/ra-data-mixer.git"
+    },
+    "keywords": [
+        "ra",
+        "react",
+        "admin",
+        "react-admin",
+        "dataprovider",
+        "mixer",
+        "lb4"
+    ],
+    "author": "KoLiBer",
+    "license": "MIT",
+    "files": [
+        "README.md",
+        "dist"
+    ],
+    "bugs": {
+        "url": "https://github.com/ckoliber/ra-data-mixer/issues"
+    },
+    "homepage": "https://github.com/ckoliber/ra-data-mixer#readme",
+    "dependencies": {
+        "query-string": "^6.13.7",
+        "ra-core": "^3.10.3"
+    },
+    "devDependencies": {
+        "@types/mocha": "^8.0.4",
+        "mocha": "^8.2.1",
+        "ts-node": "^9.1.0",
+        "typescript": "^4.1.2"
+    }
+}
