@@ -34,8 +34,8 @@
         "url": "https://github.com/ckoliber/ra-data-mixer/issues"
     },
     "homepage": "https://github.com/ckoliber/ra-data-mixer#readme",
-    "dependencies": {
-        "ra-core": "^3.10.3"
+    "peerDependencies": {
+        "ra-core": "^3.x"
     },
     "devDependencies": {
         "@types/mocha": "^8.0.4",
