@@ -1,11 +1,11 @@
 {
     "name": "ra-data-mixer",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "React Admin DataProvider Mixer",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "clean": "rm -Rf build",
+        "clean": "rm -Rf disr",
         "prebuild": "npm run clean",
         "build": "tsc",
         "build:watch": "tsc --watch",
@@ -34,13 +34,14 @@
         "url": "https://github.com/ckoliber/ra-data-mixer/issues"
     },
     "homepage": "https://github.com/ckoliber/ra-data-mixer#readme",
-    "dependencies": {
-        "ra-core": "^3.10.3"
+    "peerDependencies": {
+        "ra-core": "^3.10.4"
     },
     "devDependencies": {
-        "@types/mocha": "^8.0.4",
+        "@types/mocha": "^8.2.0",
         "mocha": "^8.2.1",
-        "ts-node": "^9.1.0",
+        "ra-core": "^3.10.4",
+        "ts-node": "^9.1.1",
         "typescript": "^4.1.2"
     }
 }

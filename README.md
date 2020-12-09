@@ -28,8 +28,8 @@ const provider2 = ...;
 
 const mixer = (resource: string) =>
     ({
-        posts: [provider1],
-        users: [provider2],
+        posts: provider1,
+        users: provider2,
     }[resource]);
 
 const App = () => (
