@@ -1,11 +1,11 @@
 {
     "name": "ra-data-mixer",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "React Admin DataProvider Mixer",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "clean": "rm -Rf build",
+        "clean": "rm -Rf disr",
         "prebuild": "npm run clean",
         "build": "tsc",
         "build:watch": "tsc --watch",
