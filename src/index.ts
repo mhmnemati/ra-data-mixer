@@ -4,10 +4,18 @@ export type Filter = (filter: any) => any;
 
 export type Mixer = (
     resource: string
-) => [DataProvider, string, Filter] | [DataProvider, string] | DataProvider;
+) =>
+    | [DataProvider, string, Filter]
+    | [DataProvider, string]
+    | DataProvider
+    | undefined;
 
 const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
     const mixed = mixer(resource);
+
+    if (!mixed) {
+        throw new Error(`Provider not found for resource: '${resource}'`);
+    }
 
     if (Array.isArray(mixed) && mixed.length === 3) {
         if (hasFilter) {
@@ -40,10 +48,6 @@ export default (mixer: Mixer): DataProvider => ({
             true
         );
 
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
         return mixedProvider.getList(mixedResource, mixedParams);
     },
     getOne: async (resource, params) => {
@@ -53,10 +57,6 @@ export default (mixer: Mixer): DataProvider => ({
             params
         );
 
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
         return mixedProvider.getOne(mixedResource, mixedParams);
     },
     getMany: async (resource, params) => {
@@ -65,10 +65,6 @@ export default (mixer: Mixer): DataProvider => ({
             resource,
             params
         );
-
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
 
         return mixedProvider.getMany(mixedResource, mixedParams);
     },
@@ -80,10 +76,6 @@ export default (mixer: Mixer): DataProvider => ({
             true
         );
 
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
         return mixedProvider.getManyReference(mixedResource, mixedParams);
     },
     create: async (resource, params) => {
@@ -92,10 +84,6 @@ export default (mixer: Mixer): DataProvider => ({
             resource,
             params
         );
-
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
 
         return mixedProvider.create(mixedResource, mixedParams);
     },
@@ -106,10 +94,6 @@ export default (mixer: Mixer): DataProvider => ({
             params
         );
 
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
         return mixedProvider.update(mixedResource, mixedParams);
     },
     updateMany: async (resource, params) => {
@@ -118,10 +102,6 @@ export default (mixer: Mixer): DataProvider => ({
             resource,
             params
         );
-
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
 
         return mixedProvider.updateMany(mixedResource, mixedParams);
     },
@@ -132,10 +112,6 @@ export default (mixer: Mixer): DataProvider => ({
             params
         );
 
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
         return mixedProvider.delete(mixedResource, mixedParams);
     },
     deleteMany: async (resource, params) => {
@@ -144,10 +120,6 @@ export default (mixer: Mixer): DataProvider => ({
             resource,
             params
         );
-
-        if (!mixedProvider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
 
         return mixedProvider.deleteMany(mixedResource, mixedParams);
     },

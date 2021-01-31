@@ -27,10 +27,10 @@ const provider1 = ...;
 const provider2 = ...;
 
 const mixer: Mixer = (resource) =>
-    ({
+    (({
         posts: provider1,
         users: provider2,
-    }[resource]);
+    } as any)[resource]);
 
 const App = () => (
     <Admin dataProvider={mixerProvider(mixer)}>
@@ -54,7 +54,7 @@ import mixerProvider, { Mixer } from "ra-data-mixer";
 const myProvider = ...;
 
 const mixer: Mixer = (resource) =>
-    ({
+    (({
         managers: [myProvider, "users", (filter) => ({
             ...filter,
             role: "manager"
@@ -63,7 +63,7 @@ const mixer: Mixer = (resource) =>
             ...filter,
             role: "reporter"
         })],
-    }[resource]);
+    } as any)[resource]);
 ```
 
 In this example, `managers` and `reporters` resources are using a same resource named `users` with different filters
