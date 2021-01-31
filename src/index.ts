@@ -1,125 +1,126 @@
 import { DataProvider } from "ra-core";
 
-export default (
-    mixer: (
-        resource: string
-    ) => [DataProvider, string] | DataProvider | undefined
-): DataProvider => ({
+export type Filter = (filter: any) => any;
+
+export type Mixer = (
+    resource: string
+) =>
+    | [DataProvider, string, Filter]
+    | [DataProvider, string]
+    | DataProvider
+    | undefined;
+
+const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
+    const mixed = mixer(resource);
+
+    if (!mixed) {
+        throw new Error(`Provider not found for resource: '${resource}'`);
+    }
+
+    if (Array.isArray(mixed) && mixed.length === 3) {
+        if (hasFilter) {
+            return [
+                mixed[0],
+                mixed[1],
+                {
+                    ...params,
+                    filter: mixed[2](params.filter),
+                },
+            ];
+        } else {
+            return [mixed[0], mixed[1], params];
+        }
+    }
+
+    if (Array.isArray(mixed) && mixed.length === 2) {
+        return [mixed[0], mixed[1], params];
+    }
+
+    return [mixed, resource, params];
+};
+
+export default (mixer: Mixer): DataProvider => ({
     getList: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params,
+            true
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].getList(provider[1], params);
-        }
-
-        return provider.getList(resource, params);
+        return mixedProvider.getList(mixedResource, mixedParams);
     },
     getOne: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].getOne(provider[1], params);
-        }
-
-        return provider.getOne(resource, params);
+        return mixedProvider.getOne(mixedResource, mixedParams);
     },
     getMany: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].getMany(provider[1], params);
-        }
-
-        return provider.getMany(resource, params);
+        return mixedProvider.getMany(mixedResource, mixedParams);
     },
     getManyReference: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params,
+            true
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].getManyReference(provider[1], params);
-        }
-
-        return provider.getManyReference(resource, params);
+        return mixedProvider.getManyReference(mixedResource, mixedParams);
     },
     create: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].create(provider[1], params);
-        }
-
-        return provider.create(resource, params);
+        return mixedProvider.create(mixedResource, mixedParams);
     },
     update: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].update(provider[1], params);
-        }
-
-        return provider.update(resource, params);
+        return mixedProvider.update(mixedResource, mixedParams);
     },
     updateMany: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].updateMany(provider[1], params);
-        }
-
-        return provider.updateMany(resource, params);
+        return mixedProvider.updateMany(mixedResource, mixedParams);
     },
     delete: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].delete(provider[1], params);
-        }
-
-        return provider.delete(resource, params);
+        return mixedProvider.delete(mixedResource, mixedParams);
     },
     deleteMany: async (resource, params) => {
-        const provider = mixer(resource);
+        const [mixedProvider, mixedResource, mixedParams] = mix(
+            mixer,
+            resource,
+            params
+        );
 
-        if (!provider) {
-            throw new Error(`Provider not found for resource: '${resource}'`);
-        }
-
-        if (Array.isArray(provider)) {
-            return provider[0].deleteMany(provider[1], params);
-        }
-
-        return provider.deleteMany(resource, params);
+        return mixedProvider.deleteMany(mixedResource, mixedParams);
     },
 });

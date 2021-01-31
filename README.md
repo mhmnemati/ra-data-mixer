@@ -19,18 +19,18 @@ npm i --save ra-data-mixer
 // in src/App.tsx
 import React from "react";
 import { Admin, Resource } from "react-admin";
-import mixerProvider from "ra-data-mixer";
+import mixerProvider, { Mixer } from "ra-data-mixer";
 
 import { PostList } from "./posts";
 
 const provider1 = ...;
 const provider2 = ...;
 
-const mixer = (resource: string) =>
-    ({
+const mixer: Mixer = (resource) =>
+    (({
         posts: provider1,
         users: provider2,
-    }[resource]);
+    } as any)[resource]);
 
 const App = () => (
     <Admin dataProvider={mixerProvider(mixer)}>
@@ -40,6 +40,33 @@ const App = () => (
 
 export default App;
 ```
+
+---
+
+## Filter
+
+You can mix same resources with different filters on different names:
+
+```tsx
+// in src/App.tsx
+import mixerProvider, { Mixer } from "ra-data-mixer";
+
+const myProvider = ...;
+
+const mixer: Mixer = (resource) =>
+    (({
+        managers: [myProvider, "users", (filter) => ({
+            ...filter,
+            role: "manager"
+        })],
+        reporters: [myProvider, "users", (filter) => ({
+            ...filter,
+            role: "reporter"
+        })],
+    } as any)[resource]);
+```
+
+In this example, `managers` and `reporters` resources are using a same resource named `users` with different filters
 
 ---
 

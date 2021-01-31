@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.0
+
+-   **feat**: add `filter feature` for mixed resources
+-   **fix**: change `clean script`
+-   **docs**: add filter feature `example`
+-   **deps**: `update` packages
+
 ## v0.3.0
 
 -   **Fix**: add optional resource `override`
