@@ -1,5 +1,18 @@
 import { DataProvider } from "ra-core";
 
+/**
+ * Export legacy dataProvider fetchType
+ */
+const GET_LIST = "GET_LIST";
+const GET_ONE = "GET_ONE";
+const GET_MANY = "GET_MANY";
+const GET_MANY_REFERENCE = "GET_MANY_REFERENCE";
+const CREATE = "CREATE";
+const UPDATE = "UPDATE";
+const UPDATE_MANY = "UPDATE_MANY";
+const DELETE = "DELETE";
+const DELETE_MANY = "DELETE_MANY";
+
 export type Filter = (filter: any) => any;
 
 export type Mixer = (
@@ -9,6 +22,27 @@ export type Mixer = (
     | [DataProvider, string]
     | DataProvider
     | undefined;
+
+const convertLegacyProvider = (provider: DataProvider | Function) => {
+    if (typeof provider === "function") {
+        return {
+            getList: (resource, params) => provider(GET_LIST, resource, params),
+            getOne: (resource, params) => provider(GET_ONE, resource, params),
+            getMany: (resource, params) => provider(GET_MANY, resource, params),
+            getManyReference: (resource, params) =>
+                provider(GET_MANY_REFERENCE, resource, params),
+            create: (resource, params) => provider(CREATE, resource, params),
+            update: (resource, params) => provider(UPDATE, resource, params),
+            updateMany: (resource, params) =>
+                provider(UPDATE_MANY, resource, params),
+            delete: (resource, params) => provider(DELETE, resource, params),
+            deleteMany: (resource, params) =>
+                provider(DELETE_MANY, resource, params),
+        } as DataProvider;
+    }
+
+    return provider;
+};
 
 const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
     const mixed = mixer(resource);
@@ -20,7 +54,7 @@ const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
     if (Array.isArray(mixed) && mixed.length === 3) {
         if (hasFilter) {
             return [
-                mixed[0],
+                convertLegacyProvider(mixed[0]),
                 mixed[1],
                 {
                     ...params,
@@ -28,15 +62,15 @@ const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
                 },
             ];
         } else {
-            return [mixed[0], mixed[1], params];
+            return [convertLegacyProvider(mixed[0]), mixed[1], params];
         }
     }
 
     if (Array.isArray(mixed) && mixed.length === 2) {
-        return [mixed[0], mixed[1], params];
+        return [convertLegacyProvider(mixed[0]), mixed[1], params];
     }
 
-    return [mixed, resource, params];
+    return [convertLegacyProvider(mixed), resource, params];
 };
 
 export default (mixer: Mixer): DataProvider => ({
