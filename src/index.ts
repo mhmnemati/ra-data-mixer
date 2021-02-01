@@ -13,16 +13,6 @@ const UPDATE_MANY = "UPDATE_MANY";
 const DELETE = "DELETE";
 const DELETE_MANY = "DELETE_MANY";
 
-export type Filter = (filter: any) => any;
-
-export type Mixer = (
-    resource: string
-) =>
-    | [DataProvider, string, Filter]
-    | [DataProvider, string]
-    | DataProvider
-    | undefined;
-
 const convertLegacyProvider = (provider: DataProvider | Function) => {
     if (typeof provider === "function") {
         return {
@@ -43,6 +33,16 @@ const convertLegacyProvider = (provider: DataProvider | Function) => {
 
     return provider;
 };
+
+export type Filter = (filter: any) => any;
+
+export type Mixer = (
+    resource: string
+) =>
+    | [DataProvider, string, Filter]
+    | [DataProvider, string]
+    | DataProvider
+    | undefined;
 
 const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
     const mixed = mixer(resource);
