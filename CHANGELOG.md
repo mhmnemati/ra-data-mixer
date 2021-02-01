@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0
+
+-   **feat**: support `legacy providers` mixing
+
 ## v0.4.0
 
 -   **feat**: add `filter feature` for mixed resources
