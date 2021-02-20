@@ -34,12 +34,12 @@ const convertLegacyProvider = (provider: DataProvider | Function) => {
     return provider;
 };
 
-export type Filter = (filter: any) => any;
+export type Mapper = (params: any) => any;
 
 export type Mixer = (
     resource: string
 ) =>
-    | [DataProvider, string, Filter]
+    | [DataProvider, string, Mapper]
     | [DataProvider, string]
     | DataProvider
     | undefined;
@@ -56,10 +56,7 @@ const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
             return [
                 convertLegacyProvider(mixed[0]),
                 mixed[1],
-                {
-                    ...params,
-                    filter: mixed[2](params.filter),
-                },
+                mixed[2](params),
             ];
         } else {
             return [convertLegacyProvider(mixed[0]), mixed[1], params];

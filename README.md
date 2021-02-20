@@ -55,13 +55,19 @@ const myProvider = ...;
 
 const mixer: Mixer = (resource) =>
     (({
-        managers: [myProvider, "users", (filter) => ({
-            ...filter,
-            role: "manager"
+        managers: [myProvider, "users", (params) => ({
+            ...params,
+            filter: {
+                ...params.filter,
+                role: "manager"
+            }
         })],
-        reporters: [myProvider, "users", (filter) => ({
-            ...filter,
-            role: "reporter"
+        reporters: [myProvider, "users", (params) => ({
+            ...params,
+            filter: {
+                ...params.filter,
+                role: "reporter"
+            }
         })],
     } as any)[resource]);
 ```
