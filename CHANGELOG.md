@@ -4,6 +4,7 @@
 
 -   **feat**: replace `filter` overrider with `params mapper`
 -   **fix**: remove `hasFilter` argument
+-   **deps**: upgrade `packages`
 
 ## v0.5.0
 
