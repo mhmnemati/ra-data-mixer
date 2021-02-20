@@ -44,7 +44,7 @@ export type Mixer = (
     | DataProvider
     | undefined;
 
-const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
+const mix = (mixer: Mixer, resource: string, params: any) => {
     const mixed = mixer(resource);
 
     if (!mixed) {
@@ -52,15 +52,7 @@ const mix = (mixer: Mixer, resource: string, params: any, hasFilter?: true) => {
     }
 
     if (Array.isArray(mixed) && mixed.length === 3) {
-        if (hasFilter) {
-            return [
-                convertLegacyProvider(mixed[0]),
-                mixed[1],
-                mixed[2](params),
-            ];
-        } else {
-            return [convertLegacyProvider(mixed[0]), mixed[1], params];
-        }
+        return [convertLegacyProvider(mixed[0]), mixed[1], mixed[2](params)];
     }
 
     if (Array.isArray(mixed) && mixed.length === 2) {
@@ -75,8 +67,7 @@ export default (mixer: Mixer): DataProvider => ({
         const [mixedProvider, mixedResource, mixedParams] = mix(
             mixer,
             resource,
-            params,
-            true
+            params
         );
 
         return mixedProvider.getList(mixedResource, mixedParams);
@@ -103,8 +94,7 @@ export default (mixer: Mixer): DataProvider => ({
         const [mixedProvider, mixedResource, mixedParams] = mix(
             mixer,
             resource,
-            params,
-            true
+            params
         );
 
         return mixedProvider.getManyReference(mixedResource, mixedParams);
