@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.6.0
+
+-   **feat**: replace `filter` overrider with `params mapper`
+-   **fix**: remove `hasFilter` argument
+-   **deps**: upgrade `packages`
+
 ## v0.5.0
 
 -   **feat**: support `legacy providers` mixing
